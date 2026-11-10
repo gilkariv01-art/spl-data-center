@@ -1,23 +1,16 @@
-CXX = g++
-CXXFLAGS = -g -Wall -std=c++11 -Iinclude
+all: bin bin/spl_data_center
 
-SRC_DIR = src
-BIN_DIR = bin
+bin/spl_data_center: bin/MemoryBlock.o bin/Main.o
+	g++ bin/MemoryBlock.o bin/Main.o -o bin/spl_data_center
 
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BIN_DIR)/%.o, $(SRCS))
-TARGET = $(BIN_DIR)/spl_data_center
+bin/MemoryBlock.o: src/MemoryBlock.cpp | bin
+	g++ -g -Wall -std=c++11 -c -Iinclude src/MemoryBlock.cpp -o bin/MemoryBlock.o
 
-all: $(BIN_DIR) $(TARGET)
+bin/Main.o: src/Main.cpp | bin
+	g++ -g -Wall -std=c++11 -c -Iinclude src/Main.cpp -o bin/Main.o
 
-$(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET)
-
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
+bin:
+	mkdir -p bin
 
 clean:
-	rm -rf $(BIN_DIR)/* $(TARGET)
+	rm -rf bin/* bin/spl_data_center
