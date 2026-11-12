@@ -18,6 +18,11 @@ public:
     void writeToBlock(std::size_t offset, int value);
     void acquire();
     IdleAction release();
+    virtual ~MemoryBlock();
+    MemoryBlock(const MemoryBlock& other);
+    MemoryBlock& operator=(const MemoryBlock& other);
+    MemoryBlock(MemoryBlock&& other) noexcept;
+    MemoryBlock& operator=(MemoryBlock&& other) noexcept;
 };
 
 class KVBlock: public MemoryBlock{
